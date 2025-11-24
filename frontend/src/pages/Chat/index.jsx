@@ -70,7 +70,7 @@ export default function Chat() {
       <Sidebar active="chat" />
 
       <div className="flex flex-col flex-1 p-6">
-        <div className="flex-1 overflow-y-auto bg-gray-50 shadow rounded p-4 mb-4">
+        <div className="flex-1 overflow-y-auto bg-gray-100 shadow rounded p-4 mb-4">
           {messages.map((msg) => (
             <div
               key={msg.id}

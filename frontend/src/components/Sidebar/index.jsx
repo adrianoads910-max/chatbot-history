@@ -27,7 +27,7 @@ export default function Sidebar() {
           to="/chat"
           className={`flex items-center gap-3 px-4 py-2 rounded text-center ${
             location.pathname === "/chat"
-              ? "bg-brand-blue-light text-white"
+              ? "bg-green-300 text-black"
               : "bg-brand-gray hover:bg-blue-100"
           }`}
         >
@@ -39,7 +39,7 @@ export default function Sidebar() {
           to="/history"
           className={`flex items-center gap-3 px-4 py-2 rounded text-center ${
             location.pathname === "/history"
-              ? "bg-brand-blue-light text-white"
+              ? "bg-amber-300 text-black"
               : "bg-brand-gray hover:bg-blue-100"
           }`}
         >

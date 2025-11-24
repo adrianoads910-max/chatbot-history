@@ -85,7 +85,7 @@ export default function History() {
         {/* Título + Botão limpar */}
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold flex items-center gap-2">
-            <MessageSquare className="w-7 h-7 text-brand-blue-dark bg-amber-50" />
+            <MessageSquare className="w-7 h-7 text-brand-blue-dark bg" />
             Histórico de Conversas
           </h1>
 
@@ -112,7 +112,7 @@ export default function History() {
               onClick={() => loadMessages(t.id)}
             >
               <p className="text-lg font-semibold flex items-center gap-2">
-                <MessageSquare size={18} className="text-blue-500" />
+                <MessageSquare size={18} className="text-brand-blue-dark" />
                 Conversa #{t.id}
               </p>
 
