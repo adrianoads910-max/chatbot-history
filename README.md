@@ -13,6 +13,20 @@ Projeto desenvolvido para demonstrar arquitetura limpa, boas práticas, componen
 
 ---
 
+## 📸 Preview
+
+### 🔐 Tela de Login e Chat em funcionamento
+<img src="./frontend/public/chatA.gif" width="600" />
+<img src="./frontend/public/chatB.gif" width="600" />
+
+### 💬 Chat
+<img src="./frontend/public/chatB02.png" width="600" />
+
+### 🕒 Histórico de Conversas
+<img src="./frontend/public/chatB03.png" width="600" />
+
+---
+
 ## 🚀 1. Requisitos
 
 * Python **3.10+**
