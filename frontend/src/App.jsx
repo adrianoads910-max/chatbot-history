@@ -1,19 +1,16 @@
-import { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import Chat from "./pages/Chat";
 
-const App = () => {
-  const [count, setCount] = useState(0);
 
-return (
-<main className="min-h-dvh grid place-items-center bg-slate-50">
-<h1 className="text-3xl font-bold text-red-600">
-Hello Tailwind + React!🔥🚀
-</h1>
- <div className="mt-4 bg-slate-800 p-4 rounded-lg text-center text-amber-50 hover:bg-slate-700 transition-colors hover:scale-105">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-      </div>
-</main>
-);
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/chat" element={<Chat />} />
+        <Route path="/history" element={<History />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
-export default App

@@ -1,12 +1,17 @@
-import axios from 'axios';
+// src/api/api.js
+import axios from "axios";
 
-// Se o backend roda em http://localhost:8000, usar proxy no package.json ou definir baseURL.
-// Aqui usamos caminho relativo para facilitar (assumir mesmo host /api/)
 const api = axios.create({
-  baseURL: '/api/',
-  headers: {
-    'Content-Type': 'application/json'
+  baseURL: "http://127.0.0.1:8000/api",
+});
+
+// Intercepta todas requisições e adiciona o token
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("access");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
+  return config;
 });
 
 export default api;
