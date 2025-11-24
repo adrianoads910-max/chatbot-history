@@ -1,15 +1,21 @@
 from rest_framework import generics, permissions
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
 from django.shortcuts import get_object_or_404
-
 from .models import Thread, Message
 from .serializers import ThreadSerializer, MessageSerializer
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework import permissions
 
 
 @api_view(["GET"])
 def health_check(request):
     return Response({"status": "ok", "message": "API is running"})
+
+@api_view(["DELETE"])
+@permission_classes([permissions.IsAuthenticated])
+def delete_history(request):
+    Thread.objects.filter(user=request.user).delete()
+    return Response({"message": "Histórico apagado com sucesso!"})
 
 
 class ThreadListCreateView(generics.ListCreateAPIView):

@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Chat from "./pages/Chat";
+import History from "./pages/History";
 
 
 export default function App() {

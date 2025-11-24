@@ -23,14 +23,15 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen gap-10">
-      <h1 className="text-3xl font-bold">Escolha seu usuário</h1>
+    <div className="flex flex-col items-center justify-center h-screen gap-10 bg-brand-blue-light">
+      <h1 className="text-3xl font-bold text-brand-gray">Escolha seu usuário</h1>
 
       <div className="flex gap-16">
         <AvatarLogin
           name="Usuário A"
           image="/avatarA.png"
           onClick={() => handleLogin("A")}
+          className="bg-amber-50"
         />
 
         <AvatarLogin
