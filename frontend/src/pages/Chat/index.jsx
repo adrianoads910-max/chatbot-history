@@ -49,12 +49,8 @@ export default function Chat() {
       setMessages((prev) => [
         ...prev,
         res.data.user_message,
-        {
-          id: Date.now(),
-          sender: null,
-          sender_name: "Chatbot",
-          text: res.data.bot_response,
-        },
+        res.data.bot_message
+,
       ]);
 
       setText("");

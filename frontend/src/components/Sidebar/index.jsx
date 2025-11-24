@@ -52,7 +52,7 @@ export default function Sidebar() {
             logout();
             navigate("/");
           }}
-          className="mt-130 flex items-center gap-3 px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600"
+          className="mt-80 flex items-center gap-3 px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600"
         >
           <LogOut size={20} />
           Logout

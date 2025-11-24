@@ -28,7 +28,6 @@ class ThreadListCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-
 class MessageListCreateView(generics.ListCreateAPIView):
     serializer_class = MessageSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -53,16 +52,20 @@ class MessageListCreateView(generics.ListCreateAPIView):
             thread=thread
         )
 
-        # Resposta do bot
-        bot_reply = f"Recebido: {user_msg.text}"
+        # Resposta diferenciada por usuário
+        if request.user.username == "A":
+            reply = "Obrigado por seu contato, Usuário A. Em breve responderemos."
+        else:
+            reply = "Agradecemos sua mensagem, Usuário B. Retornaremos assim que possível."
 
-        Message.objects.create(
+        # Criar mensagem do bot
+        bot_msg = Message.objects.create(
             thread=thread,
-            sender=None,  # chatbot
-            text=bot_reply
+            sender=None,
+            text=reply
         )
 
         return Response({
             "user_message": MessageSerializer(user_msg).data,
-            "bot_response": bot_reply
+            "bot_message": MessageSerializer(bot_msg).data
         }, status=201)
