@@ -7,7 +7,7 @@ export default function AvatarLogin({ name, image, onClick }) {
       <img
         src={image}
         alt={name}
-        className="w-24 h-24 rounded-full border-4 border-blue-500 shadow"
+        className="w-44 h-44 rounded-full border-4 border-brand-blue-dark shadow bg-amber-50"
       />
       <span className="mt-2 font-semibold">{name}</span>
     </div>

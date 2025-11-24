@@ -1,112 +1,149 @@
 import { useEffect, useState } from "react";
-import { Send } from "lucide-react";
 import api from "../../api/api";
 import { useAuth } from "../../context/AuthContext";
 import Sidebar from "../../components/Sidebar";
+import { MessageSquare, Clock, Trash2 } from "lucide-react";
 
-export default function Chat() {
+export default function History() {
   const { token } = useAuth();
-
-  const [thread, setThread] = useState(null);
+  const [threads, setThreads] = useState([]);
+  const [openThread, setOpenThread] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [text, setText] = useState("");
-  const [loading, setLoading] = useState(false);
 
-  // ✅ Limpa estado ao sair da página — evita reaproveitar conversa anterior
+  // ------------------------------
+  // Buscar todas as conversas
+  // ------------------------------
+  async function loadThreads() {
+    try {
+      const res = await api.get("/threads/", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setThreads(res.data);
+    } catch (err) {
+      console.error("Erro ao buscar threads:", err);
+    }
+  }
+
   useEffect(() => {
-    return () => {
-      setThread(null);
-      setMessages([]);
-    };
-  }, []);
+    loadThreads();
+  }, [token]);
 
-  // ✅ Enviar mensagem — cria thread apenas quando necessário
-  const handleSend = async () => {
-    if (!text.trim()) return;
-    setLoading(true);
+
+  // ------------------------------
+  // Expandir e carregar mensagens
+  // ------------------------------
+  async function loadMessages(threadId) {
+    if (openThread === threadId) {
+      setOpenThread(null);
+      setMessages([]);
+      return;
+    }
 
     try {
-      let activeThread = thread;
+      const res = await api.get(`/threads/${threadId}/messages/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-      // ✅ Cria thread somente ao enviar a primeira mensagem
-      if (!activeThread) {
-        const newThread = await api.post(
-          "/threads/",
-          {},
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        activeThread = newThread.data;
-        setThread(activeThread);
-      }
+      // ✅ evita mostrar threads sem mensagens
+      if (res.data.length === 0) return;
 
-      const res = await api.post(
-        `/threads/${activeThread.id}/messages/`,
-        { text },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      // adiciona mensagem + resposta bot
-      setMessages((prev) => [
-        ...prev,
-        res.data.user_message,
-        {
-          id: Date.now(),
-          sender: null,
-          sender_name: "Chatbot",
-          text: res.data.bot_response,
-        },
-      ]);
-
-      setText("");
-    } catch (error) {
-      console.error("Erro ao enviar mensagem:", error);
-    } finally {
-      setLoading(false);
+      setMessages(res.data);
+      setOpenThread(threadId);
+    } catch (err) {
+      console.error("Erro ao buscar mensagens:", err);
     }
-  };
+  }
+
+
+  // ------------------------------
+  // Limpar histórico
+  // ------------------------------
+  async function handleClearHistory() {
+    if (!confirm("Tem certeza que deseja apagar TODO o histórico?")) return;
+
+    try {
+      await api.delete("/threads/clear/", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setThreads([]);
+      setMessages([]);
+      setOpenThread(null);
+    } catch (err) {
+      console.error("Erro ao limpar histórico:", err);
+    }
+  }
+
 
   return (
     <div className="flex h-screen bg-amber-50">
-      <Sidebar active="chat" />
 
-      <div className="flex flex-col flex-1 p-6">
-        <div className="flex-1 overflow-y-auto bg-gray-50 shadow rounded p-4 mb-4">
-          {messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`mb-3 p-3 rounded-xl max-w-[70%] ${
-                msg.sender
-                  ? "bg-brand-blue-light text-white ml-auto"
-                  : "bg-gray-200 text-black"
-              }`}
+      <Sidebar active="history" />
+
+      <div className="flex-1 p-8 overflow-y-auto">
+
+        {/* Título + Botão limpar */}
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold flex items-center gap-2">
+            <MessageSquare className="w-7 h-7 text-brand-blue-dark bg-amber-50" />
+            Histórico de Conversas
+          </h1>
+
+          {threads.length > 0 && (
+            <button
+              onClick={handleClearHistory}
+              className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
             >
-              {!msg.sender && (
-                <div className="text-sm font-bold mb-1">Chatbot</div>
+              <Trash2 size={18} />
+              Limpar Histórico
+            </button>
+          )}
+        </div>
+
+
+        {/* Lista de Threads */}
+        {threads.length === 0 ? (
+          <p className="text-gray-500">Nenhuma conversa registrada ainda.</p>
+        ) : (
+          threads.map((t) => (
+            <div
+              key={t.id}
+              className="bg-white border rounded-lg p-4 mb-4 cursor-pointer hover:bg-gray-50 transition"
+              onClick={() => loadMessages(t.id)}
+            >
+              <p className="text-lg font-semibold flex items-center gap-2">
+                <MessageSquare size={18} className="text-blue-500" />
+                Conversa #{t.id}
+              </p>
+
+              <p className="text-sm text-gray-500 flex items-center gap-1">
+                <Clock size={14} />
+                {new Date(t.created_at).toLocaleString()}
+              </p>
+
+              {/* Expansão das mensagens */}
+              {openThread === t.id && (
+                <div className="mt-3 bg-gray-50 p-3 rounded-lg">
+                  {messages.map((m) => (
+                    <div
+                      key={m.id}
+                      className={`p-2 my-1 rounded max-w-[70%] ${
+                        m.sender
+                          ? "bg-brand-blue text-white ml-auto"
+                          : "bg-gray-200 text-black"
+                      }`}
+                    >
+                      {!m.sender && (
+                        <div className="text-xs font-bold mb-1">Chatbot</div>
+                      )}
+                      {m.text}
+                    </div>
+                  ))}
+                </div>
               )}
-              {msg.text}
             </div>
-          ))}
-        </div>
-
-        <div className="flex gap-2">
-          <input
-            type="text"
-            className="flex-1 p-2 rounded border border-brand-blue-dark bg-gray-50"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="Digite sua mensagem..."
-            onKeyDown={(e) => e.key === "Enter" && handleSend()}
-          />
-
-          <button
-            onClick={handleSend}
-            disabled={loading}
-            className="px-4 py-2 bg-brand-blue-light hover:bg-brand-blue-dark text-white rounded disabled:opacity-50 flex items-center gap-2"
-          >
-            <Send size={18} />
-            Enviar
-          </button>
-        </div>
+          ))
+        )}
       </div>
     </div>
   );
