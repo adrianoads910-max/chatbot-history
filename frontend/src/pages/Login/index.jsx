@@ -24,7 +24,7 @@ export default function Login() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen gap-16 
-      bg-gradient-to-br from-brand-blue-dark via-brand-blue-light to-brand-blue-dark text-white">
+      bg-gradient-to-br from-brand-blue-dark via-brand-blue-light to-brand-blue-dark text-amber-50">
 
       <h1 className="text-5xl font-extrabold drop-shadow-lg">
         Escolha seu Usuário

@@ -76,7 +76,7 @@ export default function History() {
 
 
   return (
-    <div className="flex h-screen bg-amber-50">
+    <div className="flex h-screen bg-gradient-to-br from-brand-blue-dark via-brand-blue-light to-brand-blue-dark">
 
       <Sidebar active="history" />
 
@@ -84,8 +84,8 @@ export default function History() {
 
         {/* Título + Botão limpar */}
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold flex items-center gap-2">
-            <MessageSquare className="w-7 h-7 text-brand-blue-dark bg" />
+          <h1 className="text-3xl font-bold flex items-center gap-2 text-amber-50">
+            <MessageSquare className="w-7 h-7 text-amber-50 bg" />
             Histórico de Conversas
           </h1>
 
@@ -108,7 +108,7 @@ export default function History() {
           threads.map((t) => (
             <div
               key={t.id}
-              className="bg-white border rounded-lg p-4 mb-4 cursor-pointer hover:bg-gray-50 transition"
+              className="bg-amber-50 border rounded-lg p-4 mb-4 cursor-pointer hover:bg-gray-50 transition"
               onClick={() => loadMessages(t.id)}
             >
               <p className="text-lg font-semibold flex items-center gap-2">

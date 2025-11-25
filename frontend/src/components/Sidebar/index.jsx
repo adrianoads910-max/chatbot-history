@@ -10,7 +10,7 @@ export default function Sidebar() {
   const avatar = user === "A" ? "/avatarA.png" : "/avatarB.png";
 
   return (
-    <aside className="w-64 bg-brand-blue-dark shadow-lg p-6 flex flex-col">
+    <aside className="w-64 bg-slate-900 shadow-lg p-6 flex flex-col">
       {/* Avatar do usuário */}
       <div className="flex flex-col items-center mb-10">
         <img

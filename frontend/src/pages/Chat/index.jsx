@@ -62,18 +62,18 @@ export default function Chat() {
   };
 
   return (
-    <div className="flex h-screen bg-amber-50">
+    <div className="flex h-screen bg-gradient-to-br from-brand-blue-dark via-brand-blue-light to-brand-blue-darkbg-gradient-to-br from-brand-blue-dark via-brand-blue-light to-brand-blue-dark">
       <Sidebar active="chat" />
 
       <div className="flex flex-col flex-1 p-6">
-        <div className="flex-1 overflow-y-auto bg-gray-100 shadow rounded p-4 mb-4">
+        <div className="flex-1 overflow-y-auto bg-amber-50 shadow rounded p-4 mb-4">
           {messages.map((msg) => (
             <div
               key={msg.id}
               className={`mb-3 p-3 rounded-xl max-w-[70%] ${
                 msg.sender
                   ? "bg-brand-blue-light text-white ml-auto"
-                  : "bg-gray-200 text-black"
+                  : "bg-gray-300 text-black"
               }`}
             >
               {!msg.sender && (
@@ -87,7 +87,7 @@ export default function Chat() {
         <div className="flex gap-2">
           <input
             type="text"
-            className="flex-1 p-2 rounded border border-brand-blue-dark bg-gray-50"
+            className="flex-1 p-2 rounded border border-brand-blue-dark bg-amber-50"
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="Digite sua mensagem..."
@@ -97,7 +97,7 @@ export default function Chat() {
           <button
             onClick={handleSend}
             disabled={loading}
-            className="px-4 py-2 bg-brand-blue-light hover:bg-brand-blue-dark text-white rounded disabled:opacity-50 flex items-center gap-2"
+            className="px-4 py-2 bg-brand-blue-light hover:bg-brand-gray text-white rounded disabled:opacity-50 flex items-center gap-2"
           >
             <Send size={18} />
             Enviar
